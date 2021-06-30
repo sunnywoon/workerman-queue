@@ -8,4 +8,6 @@ $queue = \WorkerManQueue\Queue::getInstance('Redis', $config);
 
 use Tests\TestHandler;
 
-$r = $queue->pushOn(new TestHandler(), 'test', ['test' => 'test'], 'queue');
+for ($i = 0; $i <= 100; $i++) {
+    $r = $queue->pushOn(new TestHandler(), 'test', ['test' => $i], 'queue');
+}

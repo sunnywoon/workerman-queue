@@ -28,7 +28,7 @@ class Worker
     public function run()
     {
         $worker        = new \Workerman\Worker();
-        $worker->count = 2;
+        $worker->count = 10;
         $worker->name  = 'queue';
 
         $queueName = $worker->name;
