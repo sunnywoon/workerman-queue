@@ -59,7 +59,7 @@ class Worker
                 }
             });
 
-            Timer::add(1, function () use ($queue, $queueName) {
+            Timer::add(0.1, function () use ($queue, $queueName) {
                 // 消费一次队列任务
                 $queue->popRun($queueName);
             });
