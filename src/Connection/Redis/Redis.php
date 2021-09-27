@@ -131,7 +131,6 @@ class Redis extends Connection
             $jobStr = $this->getConnect()->lPop($queueName);
         }
 
-
         if (empty($jobStr)) {
             return null;
         } else {
