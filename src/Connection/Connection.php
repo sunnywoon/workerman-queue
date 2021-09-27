@@ -102,10 +102,10 @@ abstract class Connection
      * 执行pop出来的任务(阻塞方法)
      * @param string $queueName
      */
-    public function popRun($queueName)
+    public function popRun($queueName, $popTimeOut = 0)
     {
         $extends = [];
-        $job     = $this->pop($queueName, $extends);
+        $job     = $this->pop($queueName, $popTimeOut, $extends);
         if ($job instanceof Job) {
             // 执行任务
             $this->runJob($job, $queueName);
@@ -130,10 +130,11 @@ abstract class Connection
     /**
      * 弹出队头任务(blocking)
      * @param string $queueName 队列名称
+     * @param int $popTimeOut 阻塞时间
      * @param array & $extends 额外需要传递给ack方法的参数
      * @return Job|null
      */
-    abstract protected function pop($queueName, &$extends = []);
+    abstract protected function pop($queueName, $popTimeOut = 0, &$extends = []);
 
     /**
      * 确认任务

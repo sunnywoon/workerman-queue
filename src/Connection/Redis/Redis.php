@@ -116,15 +116,21 @@ class Redis extends Connection
     /**
      * 弹出队头任务(blocking)
      * @param string $queueName 队列名称
+     * @param int $popTimeOut 阻塞时间
      * @param array & $extends 额外需要传递给ack方法的参数
      * @return Job|null
      */
-    protected function pop($queueName, &$extends = [])
+    protected function pop($queueName, $popTimeOut = 0, &$extends = [])
     {
         //从延迟集合中合并到主执行队列
         $this->migrateAllExpiredJobs($queueName);
 
-        $jobStr = $this->getConnect()->blPop($queueName, $this->popTimeOut);
+        if ($popTimeOut) {
+            $jobStr = $this->getConnect()->blPop($queueName, $popTimeOut);
+        } else {
+            $jobStr = $this->getConnect()->lPop($queueName);
+        }
+
 
         if (empty($jobStr)) {
             return null;
