@@ -127,6 +127,11 @@ class Redis extends Connection
 
         if ($popTimeOut) {
             $jobStr = $this->getConnect()->blPop($queueName, $popTimeOut);
+            if (isset($jobStr[1]) && !empty($jobStr[1])) {
+                $jobStr = $jobStr[1];
+            } else {
+                return null;
+            }
         } else {
             $jobStr = $this->getConnect()->lPop($queueName);
         }
@@ -134,11 +139,7 @@ class Redis extends Connection
         if (empty($jobStr)) {
             return null;
         } else {
-            if (isset($jobStr[1]) && !empty($jobStr[1])) {
-                return Job::Decode($jobStr[1]);
-            } else {
-                return null;
-            }
+            return Job::Decode($jobStr);
         }
     }
 
